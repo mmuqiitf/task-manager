@@ -46,6 +46,8 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
 })
 
 // Relationship with Task model
@@ -86,7 +88,7 @@ userSchema.methods.toJSON = function () {
     return userObject
 }
 
-// Middleware hash password before save and update
+// hash password before save and update
 userSchema.pre('save', async function (next) {
     const user = this
 
@@ -97,7 +99,7 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-// Middleware delete user task when user is deleted
+// delete user task when user is deleted
 userSchema.pre('remove', async function(next){
     const user = this
     await Task.deleteMany({author: user._id})
